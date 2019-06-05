@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS users (
+  id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  email VARCHAR(100) NOT NULL,
+  UNIQUE KEY unique_email (email),
+  role_id int(11) NULL,
+  FOREIGN KEY (role_id) REFERENCES roles(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

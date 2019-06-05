@@ -1,0 +1,57 @@
+version: "3.5"
+services:
+  #PHP Service
+  check24_php72:
+    build:
+      context: docker/images/php72
+      dockerfile: Dockerfile
+    container_name: check24_php72
+    tty: true
+    restart: unless-stopped
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    volumes:
+    - ./:/var/www
+    - ./docker/images/php72/config/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+    - check24-network
+
+  #Nginx Service
+  check24_nginx:
+    image: nginx:alpine
+    container_name: check24_nginx
+    restart: unless-stopped
+    tty: true
+    ports:
+    - "8050:80"
+    #   - "443:443"
+    volumes:
+    - ./:/var/www
+    - ./docker/images/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+    - check24-network
+
+  #Mysql Service
+  #todo mount container storage
+  check24_mysql:
+    build:
+      context: docker/images/mysql
+      dockerfile: Dockerfile
+    container_name: check24_mysql
+    networks:
+    - check24-network
+    environment:
+    - MYSQL_DATABASE=check24
+    - MYSQL_ROOT_PASSWORD=mysql_password
+    - MYSQL_USER=root_user
+    - MYSQL_PASSWORD=mysql_password
+    volumes:
+    - ./:/var/www
+    ports:
+    - "3306:3306"
+
+networks:
+  check24-network:
+    driver: bridge
