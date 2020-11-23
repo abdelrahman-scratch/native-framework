@@ -32,3 +32,12 @@ only need to do
 1- db migrations
 2- pagination in articles
 3- views pages
+
+## Project structure
+
+- `public/index.php`: Application entrypoint.
+- `src` is used to store the majority of the application code.
+- `lib/Repositroy`: Provide an abstraction for the data access(persistence) layer
+- `lib/Service`: modules to communicate with external services.
+- `lib/Helper`: general utility helpers.
+- `test`: the entire test suite.
